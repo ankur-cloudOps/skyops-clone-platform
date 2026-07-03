@@ -16,26 +16,44 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: skyops
+          POSTGRES_USER: skyops_user
+          POSTGRES_PASSWORD: SkyOps@123
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U skyops_user -d skyops"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     defaults:
       run:
         working-directory: backend
 
     steps:
-
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
+          distribution: temurin
           java-version: '21'
-          distribution: 'temurin'
           cache: maven
 
       - name: Grant execute permission
         run: chmod +x mvnw
 
-      - name: Build with Maven
+      - name: Build and Test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/skyops
+          SPRING_DATASOURCE_USERNAME: skyops_user
+          SPRING_DATASOURCE_PASSWORD: SkyOps@123
         run: ./mvnw clean verify
 
       - name: Build Docker Image
