@@ -1,15 +1,25 @@
-# ---------- Stage 1 : Build ----------
+# ==========================================================
+# Stage 1 : Build
+# ==========================================================
 FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 
-COPY . .
+COPY .mvn .mvn
+COPY mvnw .
+COPY pom.xml .
 
 RUN chmod +x mvnw
 
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw dependency:go-offline
 
-# ---------- Stage 2 : Runtime ----------
+COPY src src
+
+RUN ./mvnw package -DskipTests
+
+# ==========================================================
+# Stage 2 : Runtime
+# ==========================================================
 FROM eclipse-temurin:21-jre
 
 WORKDIR /app
