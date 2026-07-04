@@ -1,0 +1,43 @@
+.topbar {
+  height: 72px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 32px;
+}
+
+.topbar h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.topbar__search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  width: 300px;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  background: #f5f7fb;
+}
+
+.topbar__search input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+}
